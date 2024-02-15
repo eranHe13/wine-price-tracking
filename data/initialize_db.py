@@ -23,16 +23,6 @@ CREATE TABLE IF NOT EXISTS users (
     email TEXT NOT NULL UNIQUE
 );
 """
-
-
-    create_products_table = """
-    CREATE TABLE IF NOT EXISTS products (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
-        url TEXT NOT NULL UNIQUE
-    );
-    """
-
     create_price_history_table = """
     CREATE TABLE IF NOT EXISTS price_history (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -44,9 +34,8 @@ CREATE TABLE IF NOT EXISTS users (
     );
     """
 
-    #cursor.execute(create_users_table)
-    #cursor.execute(create_products_table)
-    #cursor.execute(create_price_history_table)
+    cursor.execute(create_users_table)
+    cursor.execute(create_price_history_table)
     cursor.execute(create_usersANDproducts_table)
     conn.commit()
     conn.close()

@@ -61,4 +61,4 @@ def scrap(url, query):
         driver.quit()
 
 # Call the scrap function with the search URL and query
-scrap('https://www.wineroute.co.il/search?keyword=', 'בוגל אסנשיאל בלנד')
+scrap('https://www.wineroute.co.il/search?keyword=', 'גבעות קברנה סוביניון')

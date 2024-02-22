@@ -8,6 +8,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
 
+
 def exit_from_popup(driver):
     # Function to handle popup by pressing ESC key
     time.sleep(5)  # Wait for the popup to appear
@@ -22,17 +23,12 @@ def search_and_extract(url, name):
     # Navigate to the URL
     driver.get(url)
 
-    # Wait for the age verification pop-up to appear
-    age_verification_popup = WebDriverWait(driver , 10).until(
-        EC.presence_of_element_located((By.ID , "dy-over-18yrs-popup"))
-    )
-
     # Find the first <li> element with class "item product product-item"
     first_product = driver.find_element(By.CSS_SELECTOR , "li.item.product.product-item")
 
     try :
         # Find the span element with class 'price-container' for the discount price
-        price_container = first_product.find_element(By.CSS_SELECTOR ,
+        price_container = first_product.find_element(By.CSS_SELECTOR,
                                                      "span.price-container.price-register_price.tax.weee.rewards_earn")
     except NoSuchElementException :
         # If discount price container not found, try finding it for the final price
@@ -54,23 +50,12 @@ def search_and_extract(url, name):
 
     # Close the WebDriver
     driver.quit()
-    # try:
-    #     # Wait for the flashy-popup element to be present
-    #     WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, '.flashy-popup')))
-    # except:
-    #     print("Flashy popup not found or timed out.")
 
-    # Write the HTML page to a file
-    # with open('./paneco.txt', 'w', encoding='utf-8') as file:
-    #     file.write(driver.page_source)
-
-    # Quit the WebDriver session
-    driver.quit()
 
     print("HTML page saved to 'paneco.txt'")
     print("Test completed.")
 
 # Example usage
 url = 'https://www.paneco.co.il/catalogsearch/result/?q='
-name = 'הר אודם'
+name = 'וודקה חמוציות'
 search_and_extract(url, name)

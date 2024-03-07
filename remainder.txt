@@ -14,5 +14,9 @@ backend tasks :
  - fix scraping_script.py in the function get_prices : if one of the websites not secces the retun "0" 
  - in all the functions in crud_api.py if not secces the retun None
  - check removewine if works 
+ - scrap : img 
+            some text on the wine
+ - ?  add counter for each wine for popularty 
+ - function in crud_api that delete product for user , recive user id and product id
   
 test and write problems 

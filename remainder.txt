@@ -1,0 +1,2 @@
+-fix add_user() function in crud_api.py that will be like get_user_wine_list 
+-addwine in server.py finish it return (if desnt seccess)

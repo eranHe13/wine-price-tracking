@@ -4,7 +4,7 @@ import datetime
 from contextlib import closing
 import scraping_script
 
-DATABASE_PATH = "D://college//YEAR 4//FINAL PROJECT//price-track-wine//data//pricetracking.db"
+DATABASE_PATH = "..\\data\\pricetracking.db"
 
 def get_user_login_details(email , password) : 
     print("---------get_user_login_details fucntion-----------\ninput --> " , email , password)

@@ -1,2 +1,18 @@
--fix add_user() function in crud_api.py that will be like get_user_wine_list 
--addwine in server.py finish it return (if desnt seccess)
+run the project :
+run backend server :port - 8000 
+                    cd ->../price-track-wine\backend\server
+                    enter : python -m uvicorn server:app --reload
+
+run react app : port - 3000
+                cd ->../price-track-wine/interface 
+                enter : npm start
+
+
+
+backend tasks : 
+ - fix derech_hyin.py , not to crash when not found , return 0  
+ - fix scraping_script.py in the function get_prices : if one of the websites not secces the retun "0" 
+ - in all the functions in crud_api.py if not secces the retun None
+ - check removewine if works 
+  
+test and write problems 

@@ -84,7 +84,7 @@ function Home(props) {
         {products.map((product) => (
           <li key={product.key} style={{ padding: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}>
           <span onClick={() => handleProductClick(product)}>{product.name}</span>
-          <FaTrash onClick={() => handleDeleteProduct(product.key)} style={{ cursor: 'pointer' }}/>
+          <FaTrash onClick={() => handleDeleteProduct(product.key)} style={{ cursor: 'pointer' ,width:"17px" , height:"17px" , marginRight:"15px"}}/>
         </li>
         ))}
       </ul>

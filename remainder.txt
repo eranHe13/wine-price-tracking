@@ -18,5 +18,6 @@ backend tasks :
             some text on the wine
  - ?  add counter for each wine for popularty 
  - function in crud_api that delete product for user , recive user id and product id
+ - password hash
   
 test and write problems 

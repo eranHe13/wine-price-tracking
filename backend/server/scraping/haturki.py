@@ -12,8 +12,9 @@ def scrape(wine_name) :
 
     url += wine_name
 
-    # Initialize the WebDriver
-    driver = webdriver.Chrome()
+    options = webdriver.ChromeOptions()
+    options.add_argument('--headless')
+    driver = webdriver.Chrome(options=options)
 
 
     # Navigate to the URL

@@ -9,18 +9,14 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 
 
-def exit_from_popup(driver):
-    # Function to handle popup by pressing ESC key
-    time.sleep(5)  # Wait for the popup to appear
-    webdriver.ActionChains(driver).send_keys(Keys.ESCAPE).perform()
-
 
 def scrape(name):
     url = 'https://www.paneco.co.il/catalogsearch/result/?q='
     url += name
 
-    # Initialize the WebDriver
-    driver = webdriver.Chrome()
+    options = webdriver.ChromeOptions()
+    options.add_argument('--headless')
+    driver = webdriver.Chrome(options=options)
 
     # Navigate to the URL
     driver.get(url)

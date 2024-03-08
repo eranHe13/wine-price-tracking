@@ -64,6 +64,7 @@ async def get_user_details(data: dict = Body(...)):
     
 @app.post("/register/")
 async def register(userData: dict = Body(...)):
+    print("regisiter start")
     res = crud_api.add_user(userData["username"], userData["password"] ,userData["email"] )
     if res : return res
     else : return None

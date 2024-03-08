@@ -14,10 +14,8 @@ def get_prices(wine_name):
         # Submit scraping tasks for each source
         futures = [executor.submit(scrape_price, source, wine_name) for source in [paneco, haturki, derech_hyin]]
         # Retrieve results as they become available
-        prices = {source.__name__: future.result() for source, future in zip([paneco, haturki, derech_hyin], futures)}
+        dict_prices = {source.__name__: future.result() for source, future in zip([paneco, haturki, derech_hyin], futures)}
 
-    # Print and return prices
-    for source, price in prices.items():
-        print(f"{source}: {price}")
+    prices = [dict_prices["scraping.derech_hyin"],dict_prices["scraping.paneco"],dict_prices["scraping.haturki"]]
     return prices
 

@@ -14,7 +14,9 @@ def hash_password(password):
 
 # Function to verify a password
 def verify_password(plain_password, hashed_password):
-    return bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password)
+    print(f"plain_password: {plain_password}")
+    print(f"hashed_password: {hashed_password}")
+    return bcrypt.checkpw(plain_password, hashed_password)
 
 def get_user_login_details(email, password):
     print("---------get_user_login_details function-----------\ninput --> ", email, password)
@@ -25,7 +27,7 @@ def get_user_login_details(email, password):
         user = cursor.fetchone()
         if user:
             stored_password = user[2]  # Assuming password is stored at index 2 in the database
-            if verify_password(password, stored_password):
+            if verify_password(password.encode('utf-8'), stored_password):
                 print("Login successful!")
                 return user
             else:
@@ -40,6 +42,7 @@ def get_user_login_details(email, password):
     finally:
         conn.close()
         print("EXIT FROM get_user_login_details function")
+
 
 def get_user_wine_list(user_id):
     print("---------get_user_wine_list function-----------\ninput --> ", user_id)
@@ -101,6 +104,7 @@ def add_new_product_for_user(user_id, wine_name, desired_price):
                 print("wine *doesnt* exist in the price_history table", wine_name)
                 date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 wine_prices = scraping_script.get_prices(wine_name)
+                print(wine_prices)
                 # Insert scraped prices into the price_history table
                 cursor.execute(
                     "INSERT INTO price_history (wine_name, date, price_wine_rout, price_paneco, price_haturki) VALUES (?, ?, ?, ?, ?)",

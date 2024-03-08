@@ -25,6 +25,8 @@ app.add_middleware(
 @app.post("/login/")
 async def check_log_in(userData: dict = Body(...)):
     res = crud_api.get_user_login_details(userData["email"], userData["password"])
+    print("enterd check log in")
+    print(res)
     if res:
         # Assuming you want to return a JSON response with user details
         return {"user": res}

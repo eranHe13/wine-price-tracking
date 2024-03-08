@@ -29,13 +29,17 @@ const regiser = async (data, updateUser) => {
 
 
 const login_server = async (data, updateUser) => {
+  console.log("enter log in");
   const response = await fetch('http://localhost:8000/login/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
+
     body: JSON.stringify(data),
   });
+    console.log("got response");
+
   if (!response.ok) {
     // If the response status code is not in the 200-299 range
     // Handle login failure (e.g., incorrect credentials)
@@ -72,17 +76,20 @@ const get_user_wines = async (userID , updateUser) => {
     return false;
   }
   const responseData = await response.json();
+  console.log("response data:")
+  console.log(responseData)
   const transformProductsArrayToMap = (responseData) => {
     const productsMap = new Map();
     responseData.data.forEach(responseData => {
-      const [id, name, date, derech_hayin, paneco, haturkey] = responseData;
+      const [id, name, date, derech_hayin, paneco, haturkey,product_image] = responseData;
       productsMap.set(id, {
         id,
         name,
         date,
         derech_hayin,
         paneco,
-        haturkey
+        haturkey,
+        product_image
       });
     });
     

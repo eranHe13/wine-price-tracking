@@ -103,12 +103,12 @@ def add_new_product_for_user(user_id, wine_name, desired_price):
                 # If the wine doesn't exist, scrape the prices
                 print("wine *doesnt* exist in the price_history table", wine_name)
                 date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                wine_prices = scraping_script.get_prices(wine_name)
-                print(wine_prices)
+                wine_prices, wine_image = scraping_script.get_prices(wine_name)
+                print(wine_prices,wine_image)
                 # Insert scraped prices into the price_history table
                 cursor.execute(
-                    "INSERT INTO price_history (wine_name, date, price_wine_rout, price_paneco, price_haturki) VALUES (?, ?, ?, ?, ?)",
-                    (wine_name, date, wine_prices[0], wine_prices[1], wine_prices[2]))
+                    "INSERT INTO price_history (wine_name, date, product_image, price_wine_rout, price_paneco, price_haturki) VALUES (?, ?, ?, ?,?, ?)",
+                    (wine_name, date,wine_image, wine_prices[0], wine_prices[1], wine_prices[2]))
                 conn.commit()
                 product_id = cursor.lastrowid  # Get the product ID
 

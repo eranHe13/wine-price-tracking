@@ -1,7 +1,7 @@
 import React from 'react';
 
 const ProductDetails = ({ product }) => {
-    const img = "https:\\winest.store\\cdn\\shop\\products\\Winest___13.11.220612_700x.png"
+    const img = product.product_image ? product.product_image: null;
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100%' }}>
       

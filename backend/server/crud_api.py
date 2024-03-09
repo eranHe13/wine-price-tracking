@@ -122,31 +122,26 @@ def add_new_product_for_user(user_id, wine_name, desired_price):
         finally:
             print("EXIT FROM add_new_product_for_user function")
 
+
+def remove_wine_for_user_by_user_id(user_id, product_id):
+    conn = sqlite3.connect(DATABASE_PATH)
+    cursor = conn.cursor()
+    print(user_id,product_id)
+    try:
+        # Remove the wine from the user's alerts
+        cursor.execute("DELETE FROM user_product_alerts WHERE user_id=? AND product_id=?", (user_id, product_id))
+        conn.commit()
+        print(f"{product_id} removed for user with ID {user_id}")
+
+    except sqlite3.Error as e:
+        print("Error removing wine for user:", e)
+    finally:
+        conn.close()
+
 ################################
-# def remove_wine_for_user_by_user_id(user_id, wine_name):
-#     conn = sqlite3.connect(DATABASE_PATH)
-#     cursor = conn.cursor()
-#
-#     try:
-#         # Get the product_id of the wine
-#         cursor.execute("SELECT id FROM price_history WHERE wine_name=?", (wine_name,))
-#         product = cursor.fetchone()
-#
-#         if product:
-#             product_id = product[0]
-#             # Remove the wine from the user's alerts
-#             cursor.execute("DELETE FROM user_product_alerts WHERE user_id=? AND product_id=?", (user_id, product_id))
-#             conn.commit()
-#             print(f"{wine_name} removed for user with ID {user_id}")
-#         else:
-#             print(f"{wine_name} not found in price history")
-#     except sqlite3.Error as e:
-#         print("Error removing wine for user:", e)
-#     finally:
-#         conn.close()
-#
-# # Now you can include the remaining functions here
-#
+
+
+
 # # Function to add a user
 # def add_user(name, password, email):
 #     print("---------add_user-----------\ninput --> ", name, password, email )

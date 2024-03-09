@@ -27,17 +27,17 @@ function Home(props) {
   const [showAddProduct, setShowAddProduct] = useState(false);
   
 
-  useEffect(() => {
-    if(user.products.length >  0) {
-      const arr = JSON.parse(user.products);
-      setProducts(arr.map(([key, obj]) => ({
-        ...obj,
-        key // Adding the key from the array to the object
+useEffect(() => {
+  if (user.products && user.products.length > 0) {
+    const arr = JSON.parse(user.products);
+    setProducts(arr.map(([key, obj]) => ({
+      ...obj,
+      key // Adding the key from the array to the object
     })));
-      console.log("products--->" , products);}
-  }, [user.products]); // Add user.products as a dependency
-  
-  
+  }
+}, [user.products]);
+
+
   const handleAddProductClick = () => {
     setShowAddProduct(true);
     setSelectedProduct(null); // Deselect any selected product
@@ -49,14 +49,30 @@ function Home(props) {
     setSelectedProduct(product);
   };
 
+  const handleDeleteProduct = async (productId) => {
+    try {
+     const response = await fetch(`http://localhost:8000/remove_wine/${user.id}/${productId}`, {
+  method: 'DELETE',
+});
 
+      if (!response.ok) {
+        throw new Error('Failed to delete product');
+      }
 
-  const handleDeleteProduct = (key) => {
-    // Update products state to filter out the deleted product
-    setProducts(products.filter(product => product.key !== key));
-    
-    // Optionally, add code here to also delete the product from the server or database
-  };
+       // Remove the deleted product from the frontend state
+    setProducts(products.filter(product => product.id !== productId));
+    setSelectedProduct(null); // Deselect any selected product
+  } catch (error) {
+    setError("Error deleting product: " + error.message);
+  }
+};
+
+  // const handleDeleteProduct = (key) => {
+  //   // Update products state to filter out the deleted product
+  //   setProducts(products.filter(product => product.key !== key));
+  //
+  //   // Optionally, add code here to also delete the product from the server or database
+  // };
 
 
 

@@ -45,11 +45,17 @@ async def get_user_details(userID: dict = Body(...)):
     else:
         # Returning a 401 Unauthorized response for failed login attempts
         raise HTTPException(status_code=401, detail="no products found")
-    
-    
-    
-    
-    
+
+
+@app.delete("/remove_wine/{user_id}/{product_id}")
+async def remove_wine_for_user(user_id: int, product_id: int):
+    print("entered remove_wine_for_user")
+    res = crud_api.remove_wine_for_user_by_user_id(user_id, product_id)
+    # if res:
+    #     return {"message": "Wine removed successfully"}
+    # else:
+    #     raise HTTPException(status_code=500, detail="Internal server error")
+    #
 @app.post("/addwine/")
 async def get_user_details(data: dict = Body(...)):
     print("data: ", data)

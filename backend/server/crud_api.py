@@ -29,7 +29,8 @@ def get_user_login_details(email, password):
             stored_password = user[2]  # Assuming password is stored at index 2 in the database
             if verify_password(password.encode('utf-8'), stored_password):
                 print("Login successful!")
-                return user
+                
+                return (user[0] , user[1] , user[3])
             else:
                 print("Incorrect password!")
                 return None
@@ -139,6 +140,24 @@ def remove_wine_for_user_by_user_id(user_id, product_id):
         conn.close()
         print("EXIT FROM remove_wine_for_user_by_user_id function")
 
+
+
+def get_all_products():
+    conn = sqlite3.connect(DATABASE_PATH)
+    cursor = conn.cursor()
+    try:
+        
+        cursor.execute("SELECT wine_name FROM price_history ")
+        temp = cursor.fetchall()
+        return temp
+    
+
+    except sqlite3.Error as e:
+        print(e)
+        return None
+    finally:
+        conn.close()
+        
 ################################
 
 

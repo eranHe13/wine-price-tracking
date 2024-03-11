@@ -15,8 +15,7 @@ def scrape(name):
 
     try :
         # Find the price element of the first product
-        price_element = driver.find_element(By.XPATH ,
-                                            '/html/body/div[4]/div/div/div[1]/div/div[2]/div[1]/a/div/div[1]')
+        price_element = driver.find_element(By.XPATH ,'/html/body/div[4]/div/div/div[1]/div/div[2]/div[1]/a/div/div[1]')
 
         # Extract the outer HTML of the price element
         price_outer_html = driver.execute_script("return arguments[0].outerHTML;" , price_element)
@@ -42,7 +41,7 @@ def scrape(name):
     except Exception as e :
         print("Error while extracting price:" , e)
         driver.quit()
-        return None
+        return 0
 
 
 

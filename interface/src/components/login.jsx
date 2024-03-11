@@ -16,7 +16,7 @@ function LogIn(props) {
   alert("You clicked the button");
   const res = await login_server({"email":email , "password" :password} , updateUser);
   if (res === true) {
-    updateUser({email , password});
+    
     navigate("/home");
   }
   else{

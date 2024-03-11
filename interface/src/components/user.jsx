@@ -12,7 +12,6 @@ export const UserProvider = ({ children }) => {
             id: "",
             name: "",
             email: "",
-            password: "",
             isLogged: false,
             products: []
         };

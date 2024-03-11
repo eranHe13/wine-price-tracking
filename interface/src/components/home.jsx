@@ -126,9 +126,9 @@ function Home(props) {
         height: '60px', // Adjust based on your preference
         width: '60px',  // Making the width equal to the height for a circle
         borderRadius: '50%',  // Circular radius
-        objectFit: 'cover', // Cover to ensure the image fully fills the circle
+              objectFit: 'cover', // Cover to ensure the image fully fills the circle
         marginRight:"35px"
-      }
+}
     } onClick={handleLogOut}></img>
   
 </div>

@@ -28,10 +28,8 @@ async def check_log_in(userData: dict = Body(...)):
     print("enterd check log in")
     print(res)
     if res:
-        # Assuming you want to return a JSON response with user details
         return {"user": res}
     else:
-        # Returning a 401 Unauthorized response for failed login attempts
         raise HTTPException(status_code=401, detail="Incorrect email or password")
     
 
@@ -39,11 +37,8 @@ async def check_log_in(userData: dict = Body(...)):
 async def get_user_details(userID: dict = Body(...)):
     print("userID: ", userID["userID"])
     res = crud_api.get_user_wine_list(userID["userID"])
-    if res:
-        # Assuming you want to return a JSON response with user details
-        return { "data" :res}
+    if res:        return { "data" :res}
     else:
-        # Returning a 401 Unauthorized response for failed login attempts
         raise HTTPException(status_code=401, detail="no products found")
 
 
@@ -51,21 +46,12 @@ async def get_user_details(userID: dict = Body(...)):
 async def remove_wine_for_user(data: dict = Body(...)):
     print("entered remove_wine_for_user")
     res = crud_api.remove_wine_for_user_by_user_id(data["user_id"], data["product_id"])
-    # if res:
-    #     return {"message": "Wine removed successfully"}
-    # else:
-    #     raise HTTPException(status_code=500, detail="Internal server error")
-    #
+    
 @app.post("/addwine/")
 async def get_user_details(data: dict = Body(...)):
     print("data: ", data)
     res = crud_api.add_new_product_for_user(data["user_id"], data["wine_name"], data["price"])
-    # if res:
-    #     # Assuming you want to return a JSON response with user details
-    #     return { "data" :res}
-    # else:
-    #     # Returning a 401 Unauthorized response for failed login attempts
-    #     raise HTTPException(status_code=401, detail="no products found")
+    
     
     
     

@@ -51,8 +51,8 @@ const login_server = async (data, updateUser) => {
   updateUser({
     id: responseData.user[0], // Adjust according to the actual response structure
     name: responseData.user[1],
-    email: responseData.user[3],
-    password: responseData.user[2] // Be cautious about storing passwords on the client side
+    email: responseData.user[2],
+   
   });
   get_user_wines(responseData.user[0], updateUser);
   return true;

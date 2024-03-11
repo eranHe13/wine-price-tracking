@@ -20,19 +20,24 @@ def scrape(wine_name) :
     # Navigate to the URL
     driver.get(url)
     time.sleep(2)
-    # Assuming your HTML content is stored in the variable html_content
-    html_content = driver.page_source
-    # Parse the HTML content
-    soup = BeautifulSoup(html_content , 'html.parser')
-    # Find the first prod-price class inside the body divider
-    prod_price_element = soup.select_one("body div.prod-price")
+    try:
+        # Assuming your HTML content is stored in the variable html_content
+        html_content = driver.page_source
+        # Parse the HTML content
+        soup = BeautifulSoup(html_content , 'html.parser')
+        # Find the first prod-price class inside the body divider
+        prod_price_element = soup.select_one("body div.prod-price")
 
-    # Find the first span element inside the prod-price div
-    first_span_element = prod_price_element.find("span")
+        # Find the first span element inside the prod-price div
+        first_span_element = prod_price_element.find("span")
 
-    # Extract the price value from the text inside the span element
-    price_value = first_span_element.nextSibling.strip()
-
+        # Extract the price value from the text inside the span element
+        price_value = first_span_element.nextSibling.strip()
+    except Exception as e :
+        driver.quit()
+        print("Error while extracting price:" , e)
+        driver.quit()
+        return 0
     # Close the WebDriver
     driver.quit()
 

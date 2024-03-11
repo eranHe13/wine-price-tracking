@@ -56,6 +56,6 @@ def scrape(name):
     except NoSuchElementException:
         print("Product not found")
         driver.quit()
-        return None
+        return 0
 
 

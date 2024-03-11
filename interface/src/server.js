@@ -82,7 +82,7 @@ const get_user_wines = async (userID , updateUser) => {
   const transformProductsArrayToMap = (responseData) => {
     const productsMap = new Map();
     responseData.data.forEach(responseData => {
-      const [id, name, date, derech_hayin, paneco, haturkey,product_image] = responseData;
+      const [id, name, date, derech_hayin, paneco, haturkey,product_image , desire_price] = responseData;
       productsMap.set(id, {
         id,
         name,
@@ -90,7 +90,8 @@ const get_user_wines = async (userID , updateUser) => {
         derech_hayin,
         paneco,
         haturkey,
-        product_image
+        product_image, 
+        desire_price,
       });
     });
     

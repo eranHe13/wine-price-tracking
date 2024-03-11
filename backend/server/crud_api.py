@@ -50,16 +50,22 @@ def get_user_wine_list(user_id):
     conn = sqlite3.connect(DATABASE_PATH)
     cursor = conn.cursor()
     try:
-        cursor.execute("SELECT product_id FROM user_product_alerts WHERE user_product_alerts.user_id =? ", (str(user_id),))
+        query = "SELECT price_history.* , user_product_alerts.desired_price FROM price_history JOIN user_product_alerts ON user_product_alerts.product_id = price_history.id WHERE  user_product_alerts.user_id = ? ;"
+        cursor.execute(query , (user_id,))
         products_id = cursor.fetchall()
-        print("products_id---> ", products_id)
         if products_id:
-            numbers_list = [item[0] for item in products_id]
-            questions_marks = ','.join("?" for _ in numbers_list)
-            query = f"SELECT * FROM price_history WHERE price_history.id IN ({questions_marks})"
-            cursor.execute(query, numbers_list)
-            products = cursor.fetchall()
-            return products
+            print("products_id---> ", products_id)
+            return products_id
+        # cursor.execute("SELECT product_id FROM user_product_alerts WHERE user_product_alerts.user_id =? ", (str(user_id),))
+        # products_id = cursor.fetchall()
+        # print("products_id---> ", products_id)
+        # if products_id:
+        #     numbers_list = [item[0] for item in products_id]
+        #     questions_marks = ','.join("?" for _ in numbers_list)
+        #     query = f"SELECT * FROM price_history WHERE price_history.id IN ({questions_marks})"
+        #     cursor.execute(query, numbers_list)
+        #     products = cursor.fetchall()
+        #     return products
         else:
             return None
     except sqlite3.Error as e:

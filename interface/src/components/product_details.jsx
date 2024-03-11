@@ -8,7 +8,7 @@ const ProductDetails = ({ product }) => {
       {/* Product Name in the Center */}
       
       <h2 class="display-1" style={{ textAlign: 'center' }}>{product.name}</h2>
-
+      <h3 style={{ textAlign: 'center' }}>My Desire Price : {product.desire_price}</h3>
       <div style={{ display: 'flex', justifyContent: 'space-around'   }}>
         {/* Product Details on the Left */}
        

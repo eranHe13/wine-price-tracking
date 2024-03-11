@@ -1,6 +1,7 @@
 import crud_api 
 import scraping_script
-
+import sqlite3
+DATABASE_PATH = "..\\data\\pricetracking.db"
 
 def updatePrices():
     products_list = crud_api.get_all_products();
@@ -12,21 +13,10 @@ def updatePrices():
     
     for l in list:
         print(l , " ---------> ",list[l])
-
-
-def test():
-    email = "wine@gmail.com"
-    password = "123456"
-    print(crud_api.get_user_login_details(email,password))
-
-def main():
-    test()
-    
-    # get prices
-    # insert data with name to table 
-    
-    
     
     
 
-main()
+
+
+
+

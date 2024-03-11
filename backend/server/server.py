@@ -37,7 +37,8 @@ async def check_log_in(userData: dict = Body(...)):
 async def get_user_details(userID: dict = Body(...)):
     print("userID: ", userID["userID"])
     res = crud_api.get_user_wine_list(userID["userID"])
-    if res:        return { "data" :res}
+    if res:       
+        return { "data" :res}
     else:
         raise HTTPException(status_code=401, detail="no products found")
 

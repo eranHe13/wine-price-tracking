@@ -9,7 +9,7 @@ const ProductDetails = ({ product }) => {
       
       <h2 class="display-1" style={{ textAlign: 'center' }}>{product.name}</h2>
 
-      <div style={{ display: 'flex', justifyContent: 'space-around', width: '100%', alignItems: 'center'   }}>
+      <div style={{ display: 'flex', justifyContent: 'space-around'   }}>
         {/* Product Details on the Left */}
        
         <table class="table" style={{ padding: '0 20px', direction: 'rtl' , fontSize:"25px" }}>
@@ -43,8 +43,8 @@ const ProductDetails = ({ product }) => {
         <div >
 
         {/* Product Image and Description on the Right */}
-        <div  style={{ flex: 1, textAlign: 'center', padding: '0 20px' }}>
-          <img class="card-img-top" src={img} alt={product.name}  />
+        <div  style={{  textAlign: 'center', padding: '0 20px' , height:"400px" }}>
+          <img class="card-img-top" src={img} alt={product.name} style={{height:"400px"}} />
           <p class="card-text" >Some words about the wine</p>
           <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
         </div>

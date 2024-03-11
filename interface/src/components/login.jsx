@@ -2,6 +2,7 @@ import React, { useState ,useEffect ,  useContext  } from "react";
 import {useUser} from "./user";
 import { useNavigate } from 'react-router-dom';
 import {login_server} from "../server"
+import image from "./assests/login.jpg";
 
 function LogIn(props) {
   sessionStorage.clear();
@@ -29,6 +30,7 @@ const handleClickRegister = async (event) => {
 };
 
   return (
+    <div style={{display : "flex" , alignItems:"center" }}>
     <div className="Auth-form-container">
       <form className="Auth-form">
         <div className="Auth-form-content">
@@ -64,10 +66,14 @@ const handleClickRegister = async (event) => {
             <button className="btn btn-primary" onClick={handleClickRegister} >
               Register
             </button>
+            
           </div>
          
         </div>
       </form>
+      <img src={image} style={{height:"500px" , width:"500px" , borderRadius:"20%"}}/>
+
+    </div>
     </div>
   );
 }

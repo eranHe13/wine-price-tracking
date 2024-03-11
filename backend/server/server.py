@@ -47,10 +47,10 @@ async def get_user_details(userID: dict = Body(...)):
         raise HTTPException(status_code=401, detail="no products found")
 
 
-@app.delete("/remove_wine/{user_id}/{product_id}")
-async def remove_wine_for_user(user_id: int, product_id: int):
+@app.post("/removeWine/")
+async def remove_wine_for_user(data: dict = Body(...)):
     print("entered remove_wine_for_user")
-    res = crud_api.remove_wine_for_user_by_user_id(user_id, product_id)
+    res = crud_api.remove_wine_for_user_by_user_id(data["user_id"], data["product_id"])
     # if res:
     #     return {"message": "Wine removed successfully"}
     # else:

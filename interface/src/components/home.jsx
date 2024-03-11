@@ -1,22 +1,12 @@
 import React, {   useState, useEffect }  from "react";
 import { FaWineBottle , FaTrash  } from "react-icons/fa";
 import {useUser} from "./user";
-import {addWine , get_user_wines} from "../server"
 import AddProductForm from "./add_Wine_Form";
 import ProductDetails from "./product_details"
-
-// const ProductDetails = ({ product }) => (
-//   <div style={{justifyContent:"center" }}>
-//     <h3>{product.name}</h3>
-//     <p>דרך היין : {product.derech_hayin}</p>
-//     <p>פנקו : {product.paneco}</p>
-//     <p>הטורקי : {product.haturkey}</p>
-
-//     {/* You can display more product details here */}
-//   </div>
-// );
-
-
+import { removeWine } from "../server";
+import { useNavigate } from 'react-router-dom';
+import logo from "./assests/logo.jpg";
+import logoutLogo from "./assests/logout.png";
 
 function Home(props) {
   const { user , updateUser  } = useUser();
@@ -25,19 +15,37 @@ function Home(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showAddProduct, setShowAddProduct] = useState(false);
-  
+  const navigate = useNavigate(); // Initialize useNavigate hook
 
-useEffect(() => {
-  if (user.products && user.products.length > 0) {
-    const arr = JSON.parse(user.products);
-    setProducts(arr.map(([key, obj]) => ({
-      ...obj,
-      key // Adding the key from the array to the object
-    })));
+
+  if(!user.isLogged){
+    navigate("/");
   }
-}, [user.products]);
 
 
+
+  useEffect(() => {
+    if (user.products && typeof user.products === 'string') {
+      console.log("Parsing user.products as JSON");
+      const productsArray = JSON.parse(user.products);
+      const productsWithKeys = productsArray.map(([key, obj]) => ({
+        ...obj,
+        key // Adding the key from the array to the object
+      }));
+      setProducts(productsWithKeys);
+    } else if (user.products && typeof user.products === 'object') {
+      console.log("Using user.products as object");
+      // Assuming user.products is an object where keys are product ids and values are product objects
+      const productsWithKeys = Object.entries(user.products).map(([key, obj]) => ({
+        ...obj,
+        key // Adding the key from the object to the product
+      }));
+      setProducts(productsWithKeys);
+    }
+    console.log("products--->", products);
+  }, [user.products]); // Add user.products as a dependency
+  
+  
   const handleAddProductClick = () => {
     setShowAddProduct(true);
     setSelectedProduct(null); // Deselect any selected product
@@ -47,32 +55,32 @@ useEffect(() => {
   const handleProductClick = (product) => {
     setShowAddProduct(null);
     setSelectedProduct(product);
+    
   };
 
-  const handleDeleteProduct = async (productId) => {
-    try {
-     const response = await fetch(`http://localhost:8000/remove_wine/${user.id}/${productId}`, {
-  method: 'DELETE',
-});
-
-      if (!response.ok) {
-        throw new Error('Failed to delete product');
-      }
-
-       // Remove the deleted product from the frontend state
-    setProducts(products.filter(product => product.id !== productId));
-    setSelectedProduct(null); // Deselect any selected product
-  } catch (error) {
-    setError("Error deleting product: " + error.message);
+  const handleLogOut = () => {
+    sessionStorage.clear();
+    navigate("/");
   }
-};
 
-  // const handleDeleteProduct = (key) => {
-  //   // Update products state to filter out the deleted product
-  //   setProducts(products.filter(product => product.key !== key));
-  //
-  //   // Optionally, add code here to also delete the product from the server or database
-  // };
+  const handleDeleteProduct = async (key) => {
+    // Find the product with the matching key
+    const chosenProduct = products.find(product => product.key === key);
+    // Log key and chosen product ID for debugging
+    console.log("key:", key, "chosenProduct:", chosenProduct.id);
+    // Update state to remove the product
+    setProducts(products.filter(product => product.key !== key));
+    // Log user ID and product ID being removed
+    console.log("user id --", user.id, "product-id--:", key);
+    // Perform the removeWine operation and update the user
+    const res = await removeWine({"user_id": user.id, "product_id": chosenProduct.id}, updateUser);
+    // Deselect any selected product
+    setSelectedProduct(null);
+    // Update the user's products after deletion
+    await updateUser({products: products.filter(product => product.key !== key)});
+    // Log a message indicating the operation's completion
+    console.log("Operation completed for user id --", user.id);
+  };
 
 
 
@@ -82,14 +90,49 @@ useEffect(() => {
  
   return (
     <div >
-    <div calss="d-block" className="header"  style={{height:"100px"}} >
-      <nav class="navbar bg-body-tertiary"   style={{height:"100%" }}>
-        <div class="container position-absolute top-0 start-0" style={{height:"100%" , marginLeft:"15px" , fontSize:"40px"}}>
-        <FaWineBottle />
-          {user.name}
-        </div>
-      </nav>
-    </div>
+   <div className="header" style={{
+    display: 'flex', 
+    flexDirection: 'row', 
+    alignItems: 'center',  // Ensure items are vertically centered
+    height: "190px", 
+    margin: "15px",
+    justifyContent: 'space-between' ,// Distribute space evenly between the items
+    borderBottom: '1px solid #ccc',
+    backgroundColor : "#E1E5DC"
+}}>
+  {/* Logo on the left with a circular radius */}
+  <img src={logo} alt="Logo" style={{
+    height: '150px', // Adjust based on your preference
+    width: '150px',  // Making the width equal to the height for a circle
+    borderRadius: '50%',  // Circular radius
+    objectFit: 'cover', // Cover to ensure the image fully fills the circle
+    marginLeft:"15px"
+  }} />
+  
+  {/* User name in the middle */}
+  <span style={{
+    flex: 1, 
+    textAlign: 'center',  // Center the text
+    fontSize: '54px',  // Adjust font size as needed
+    fontStyle:"italic"
+  }}>
+    {user.name}
+  </span>
+  
+  {/* Logout button on the right */}
+  
+    <img src={logoutLogo} style={
+      { cursor: 'pointer',
+        height: '60px', // Adjust based on your preference
+        width: '60px',  // Making the width equal to the height for a circle
+        borderRadius: '50%',  // Circular radius
+        objectFit: 'cover', // Cover to ensure the image fully fills the circle
+        marginRight:"35px"
+      }
+    } onClick={handleLogOut}></img>
+  
+</div>
+
     <div style={{ display: 'flex', flexDirection: 'row', height: '100vh' }}>
     <div style={{ flex: '1', overflowY: 'auto', borderRight: '1px solid #ccc' }}>
       <div class="d-flex justify-content-center"  >
@@ -106,7 +149,7 @@ useEffect(() => {
       </ul>
       </div>
     </div>
-    <div style={{ flex: '4', padding: '20px' , alignContent:"center" }}>
+    <div style={{ flex: '4', padding: '20px' }}>
     {showAddProduct ? (
           <AddProductForm user={user} updateUser={updateUser} />
 

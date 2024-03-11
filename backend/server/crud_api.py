@@ -101,7 +101,7 @@ def add_new_product_for_user(user_id, wine_name, desired_price):
                 print("wine exists in the price_history table", wine_name)
             else:
                 # If the wine doesn't exist, scrape the prices
-                print("wine *doesnt* exist in the price_history table", wine_name)
+                print("wine doesnt exist in the price_history table", wine_name)
                 date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 wine_prices, wine_image = scraping_script.get_prices(wine_name)
                 print(wine_prices,wine_image)
@@ -124,9 +124,9 @@ def add_new_product_for_user(user_id, wine_name, desired_price):
 
 
 def remove_wine_for_user_by_user_id(user_id, product_id):
+    print("---------remove_wine_for_user_by_user_id-----------\ninput --> ", user_id, ", ", product_id)
     conn = sqlite3.connect(DATABASE_PATH)
     cursor = conn.cursor()
-    print(user_id,product_id)
     try:
         # Remove the wine from the user's alerts
         cursor.execute("DELETE FROM user_product_alerts WHERE user_id=? AND product_id=?", (user_id, product_id))
@@ -137,6 +137,7 @@ def remove_wine_for_user_by_user_id(user_id, product_id):
         print("Error removing wine for user:", e)
     finally:
         conn.close()
+        print("EXIT FROM remove_wine_for_user_by_user_id function")
 
 ################################
 
@@ -163,4 +164,3 @@ def remove_wine_for_user_by_user_id(user_id, product_id):
 
 
 # Add the rest of your functions here
-

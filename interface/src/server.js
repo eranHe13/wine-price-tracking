@@ -1,3 +1,4 @@
+import { updateUser } from "./components/user";
 
 
 
@@ -110,9 +111,26 @@ const addWine = async (data, updateUser) => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(data),
+    // if not response ok ...
   });
-  
+}
+
+const removeWine = async (data , updateUser) =>{
+  console.log("removeWine , input - " + data);
+  const response = await fetch('http://localhost:8000/removeWine/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+    // if not response ok ...
+  });
 }
 
 
-  export { login_server  , regiser , addWine , get_user_wines};
+
+
+
+
+
+  export { login_server  , regiser , addWine , get_user_wines ,removeWine};

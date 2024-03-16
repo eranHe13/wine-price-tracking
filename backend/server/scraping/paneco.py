@@ -1,13 +1,6 @@
 from bs4 import BeautifulSoup
 from selenium import webdriver
-from selenium.common import NoSuchElementException
-from selenium.webdriver import Keys
-from selenium.webdriver.common.alert import Alert
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-import time
-from selenium.common.exceptions import NoSuchElementException
+import re
 
 def scrape(name):
     url = 'https://www.paneco.co.il/catalogsearch/result/?q='
@@ -19,43 +12,76 @@ def scrape(name):
 
     # Navigate to the URL
     driver.get(url)
+    try :
+        # Assuming your HTML content is stored in the variable html_content
+        html_content = driver.page_source
+        # Parse the HTML content
+        soup = BeautifulSoup(html_content , 'html.parser')
 
-    try:
-        # Find the first <li> element with class "item product product-item"
-        first_product = driver.find_element(By.CSS_SELECTOR, "li.item.product.product-item")
+        # Extract the wine name
+        # Find the element by ID and extract the data-name attribute
+        product_details_element = soup.find("div" , class_="product details product-item-details")
+        WINE_NAME = product_details_element.contents[1].contents[1].contents[0][2:]
+        # Find the span element with the class "product-image-wrapper"
+        image_wrapper = soup.find("span" , class_="product-image-wrapper")
+        # Get the img tag inside the span element
+        image_tag = image_wrapper.find("img")
+        # Get the src attribute of the img tag
+        WINE_IMG_URL = image_tag["src"]
+        # Get the url to the product
+        url_product = product_details_element.contents[1].contents[1].attrs['href']
 
-        # Get the image link
-        try:
-            image_element = first_product.find_element(By.CSS_SELECTOR, "img.product-image-photo")
-            image_link = image_element.get_attribute("src")
-        except NoSuchElementException:
-            print("Image not found")
-            image_link = None
-
-        # Find the price container
-        try:
-            price_container = first_product.find_element(By.CSS_SELECTOR,
-                                                         "span.price-container.price-final_price.tax.weee.rewards_earn")
-        except NoSuchElementException:
-            print("Price container not found")
-            return None
 
         # Get the price
         try:
-            price_span = price_container.find_element(By.CSS_SELECTOR, "span[data-price-amount]")
-            price = price_span.get_attribute("data-price-amount")
-        except NoSuchElementException:
-            print("Price not found")
-            return None
+            reg_price_text = product_details_element.contents[len(product_details_element.contents)-6].contents[0].contents[1].contents[1].contents[0].text
+            REGULAR_PRICE = float(re.search(r'(\d+\.\d+)' , reg_price_text).group(1))
+        except:
+            REGULAR_PRICE = 0
+        try:
+            club_price_text = product_details_element.contents[len(product_details_element.contents)-6].contents[2].contents[1].contents[3].contents[0].contents[0].text
+            CLUB_PRICE = float(re.search(r'(\d+\.\d+)' , club_price_text).group(1))
+        except:
+            CLUB_PRICE = 0
+        try :
+            # Find the SALE_PRICE element using soup
+            product_sale_element = soup.find("div" , class_="product details product-item-details")
+            sale_price_lst  = product_sale_element.contents[len(product_details_element.contents)-4].contents[1].contents[0]
+            numbers_only = re.findall(r'\d+' , sale_price_lst)
+            numbers_only = [float(num) for num in numbers_only]
+            SALE_PRICE = [numbers_only[0] , numbers_only[-1]]
+            SALE_PRICE.append(SALE_PRICE[1] / SALE_PRICE[0])
+        except:
+            print("Sale price not found")
+            SALE_PRICE = []
 
-        # Close the WebDriver
+    except Exception as e :
         driver.quit()
+        WINE_NAME = ""
+        WINE_IMG_URL = ""
+        url_product = ""
+        REGULAR_PRICE = 0
+        CLUB_PRICE = 0
+        SALE_PRICE = 0
 
-        return price, image_link
+    # Close the WebDriver
+    driver.quit()
 
-    except NoSuchElementException:
-        print("Product not found")
-        driver.quit()
-        return 0
+    wine = {
+        "id" : None ,
+        "name" : WINE_NAME ,
+        "regular_price" : REGULAR_PRICE ,
+        "club_price" : CLUB_PRICE ,
+        "sale_price" : SALE_PRICE ,
+        "url" : url_product ,
+        "image_url" : WINE_IMG_URL
+    }
+    driver.quit()
+    return wine
+
+
+
+
+
 
 

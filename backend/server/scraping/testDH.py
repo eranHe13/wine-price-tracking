@@ -9,7 +9,6 @@ def scrape(name):
     url_serach = 'https://www.wineroute.co.il/search?keyword=' + name
     
     options = webdriver.ChromeOptions()
-    options.add_argument('--headless')
     driver = webdriver.Chrome(options=options)
     driver.get(url_serach)
 
@@ -24,7 +23,7 @@ def scrape(name):
         ## add - check similary of search name and product name if not return None
         
     except Exception as e:
-        print("Error not founed wine in the site derech_hyin - " , e)
+        print("Error not founed wine in the site - " , e)
         return None
     
     
@@ -32,12 +31,12 @@ def scrape(name):
     url_product = "https://www.wineroute.co.il/Product/" + WINE_ID_STRING
     driver.get(url_product)
     
-    '''
-    #DETAILS ABOUT THE WINE
-    WINE_DETAILS_ELEMENT = driver.find_element(By.XPATH, "/html/body/div[3]/div/div/div[2]/div/div[2]")
-    WINE_DETAILS_ELEMENT_OH = driver.execute_script("return arguments[0].outerHTML;" , WINE_DETAILS_ELEMENT)
-    WINE_DETAILS_SOUP = BeautifulSoup(WINE_DETAILS_ELEMENT_OH, 'html.parser')
-    ''' 
+
+    # #DETAILS ABOUT THE WINE
+    # WINE_DETAILS_ELEMENT = driver.find_element(By.XPATH, "/html/body/div[3]/div/div/div[2]/div/div[2]")
+    # WINE_DETAILS_ELEMENT_OH = driver.execute_script("return arguments[0].outerHTML;" , WINE_DETAILS_ELEMENT)
+    # WINE_DETAILS_SOUP = BeautifulSoup(WINE_DETAILS_ELEMENT_OH, 'html.parser')
+        
         
     # GET PRICES REGULAR AND CLUB  
     WINE_PRICE = driver.find_element(By.XPATH ,"/html/body/div[3]/div/div/div[2]/div/div[3]/div" )
@@ -49,10 +48,9 @@ def scrape(name):
         CLUB_PRICE = WINE_PRICE_SOUP.find('div', class_='price club').find('span').text.replace("₪", "")
         CLUB_PRICE = float(CLUB_PRICE.replace("₪", ""))
     except Exception as e:
-        print("Error not founed CLUB_PRICE - " , e)
+        print("Error not founed club   price - " , e)
         CLUB_PRICE = 0
-    
-    # GET SALE PRICE    
+        
     try:
         SALE_PRICE_ELEM = driver.find_element(By.XPATH ,"/html/body/div[3]/div/div/div[2]/div/div[1]/img" ).get_attribute("alt")
         SALE_PRICE = re.findall(r'\d+\.\d+|\d+', SALE_PRICE_ELEM)
@@ -92,102 +90,4 @@ def main():
 main()
     
     
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# from selenium import webdriver
-# from selenium.webdriver.common.by import By
-# from bs4 import BeautifulSoup
-# import re
-
-# def scrape(name):
-#     # Function to scrape product details
-#     url = 'https://www.wineroute.co.il/search?keyword='
-#     url += name
-
-#     options = webdriver.ChromeOptions()
-#     options.add_argument('--headless')
-#     driver = webdriver.Chrome(options=options)
-#     driver.get(url)
-
-#     try :
-#         # Find the price element of the first product
-#         price_element = driver.find_element(By.XPATH ,'/html/body/div[4]/div/div/div[1]/div/div[2]/div[1]/a/div/div[1]')
-
-#         # Extract the outer HTML of the price element
-#         price_outer_html = driver.execute_script("return arguments[0].outerHTML;" , price_element)
-
-#         # Parse the price HTML using BeautifulSoup
-#         price_html = BeautifulSoup(price_outer_html , 'html.parser')
-
-#         # Get the text inside the price element
-#         price_text = price_html.get_text()
-
-#         # Use regular expression to extract numeric value
-#         price_numeric = re.search(r'\d+\.\d+' , price_text).group()
-
-#         # Convert the extracted numeric value to float
-#         price_numeric = float(price_numeric)
-
-#         # Close the WebDriver session
-#         driver.quit()
-
-#         # Return the price
-#         return price_numeric
-
-#     except Exception as e :
-#         print("Error while extracting price:" , e)
-#         driver.quit()
-#         return 0
-
-
-
-# def main():
-#     scrape("דרך ארץ רוזה")
-# main()
     

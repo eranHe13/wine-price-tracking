@@ -8,16 +8,8 @@ run react app : port - 3000
                 enter : npm start
 
 
-
-backend tasks : 
- - fix derech_hyin.py , not to crash when not found , return 0  
- - fix scraping_script.py in the function get_prices : if one of the websites not secces the retun "0" 
- - in all the functions in crud_api.py if not secces the retun None
- - check removewine if works 
- - scrap : img 
-            some text on the wine
- - ?  add counter for each wine for popularty 
- - function in crud_api that delete product for user , recive user id and product id
- - password hash
-  
-test and write problems 
+TASKS:
+1. change the database : 
+    - add new table in the name wine_prices_history
+    - change the name of table wine_history to wine_current_price and add culomn counter 
+     

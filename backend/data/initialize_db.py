@@ -38,9 +38,9 @@ def initialize_db():
     );
     """
 
-    cursor.execute(create_users_table)
+    #cursor.execute(create_users_table)
     cursor.execute(create_price_history_table)
-    cursor.execute(create_user_product_alerts_table)
+    #cursor.execute(create_user_product_alerts_table)
     conn.commit()
     conn.close()
 

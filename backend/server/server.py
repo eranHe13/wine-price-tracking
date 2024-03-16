@@ -49,7 +49,7 @@ async def remove_wine_for_user(data: dict = Body(...)):
     res = crud_api.remove_wine_for_user_by_user_id(data["user_id"], data["product_id"])
     
 @app.post("/addwine/")
-async def get_user_details(data: dict = Body(...)):
+async def add_wine_for_user(data: dict = Body(...)):
     print("data: ", data)
     res = crud_api.add_new_product_for_user(data["user_id"], data["wine_name"], data["price"])
     

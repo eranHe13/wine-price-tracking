@@ -50,12 +50,12 @@ def get_user_wine_list(user_id):
     conn = sqlite3.connect(DATABASE_PATH)
     cursor = conn.cursor()
     try:
-        query = "SELECT price_history.* , user_product_alerts.desired_price FROM price_history JOIN user_product_alerts ON user_product_alerts.product_id = price_history.id WHERE  user_product_alerts.user_id = ? ;"
+        query = "SELECT current_price.* , user_product_alerts.desired_price FROM current_price JOIN user_product_alerts ON user_product_alerts.product_id = current_price.id WHERE  user_product_alerts.user_id = ? ;"
         cursor.execute(query , (user_id,))
-        products_id = cursor.fetchall()
-        if products_id:
-            print("products_id---> ", products_id)
-            return products_id
+        user_wines = cursor.fetchall()
+        if user_wines:
+            print("user_wines---> ", user_wines)
+            return user_wines
         # cursor.execute("SELECT product_id FROM user_product_alerts WHERE user_product_alerts.user_id =? ", (str(user_id),))
         # products_id = cursor.fetchall()
         # print("products_id---> ", products_id)
@@ -100,11 +100,14 @@ def add_new_product_for_user(user_id, wine_name, desired_price):
         cursor = conn.cursor()
         try:
             # Check if the wine exists in the price_history table
-            cursor.execute("SELECT id FROM price_history WHERE wine_name=?", (wine_name,))
+            cursor.execute("SELECT current_price.id FROM current_price WHERE wine_name=?", (wine_name,))
             product = cursor.fetchone()
 
             if product:
                 product_id = product[0]
+                cursor.execute("UPDATE current_price SET counter = counter + 1 WHERE id = ?;", (product_id , ))
+
+                
                 print("wine exists in the price_history table", wine_name)
             else:
                 # If the wine doesn't exist, scrape the prices
@@ -114,8 +117,8 @@ def add_new_product_for_user(user_id, wine_name, desired_price):
                 print(wine_prices,wine_image)
                 # Insert scraped prices into the price_history table
                 cursor.execute(
-                    "INSERT INTO price_history (wine_name, date, product_image, price_wine_rout, price_paneco, price_haturki) VALUES (?, ?, ?, ?,?, ?)",
-                    (wine_name, date,wine_image, wine_prices[0], wine_prices[1], wine_prices[2]))
+                    "INSERT INTO current_price (wine_name, date, product_image, price_wine_rout, price_paneco, price_haturki , counter) VALUES (?, ?, ?, ?,?, ? , ?)",
+                    (wine_name, date,wine_image, wine_prices[0], wine_prices[1], wine_prices[2] , 1))
                 conn.commit()
                 product_id = cursor.lastrowid  # Get the product ID
 
@@ -153,7 +156,7 @@ def get_all_products():
     cursor = conn.cursor()
     try:
         
-        cursor.execute("SELECT wine_name FROM price_history ")
+        cursor.execute("SELECT * FROM currnet_price ")
         temp = cursor.fetchall()
         return temp
     

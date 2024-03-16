@@ -15,7 +15,9 @@ def updatePrices():
         print(l , " ---------> ",list[l])
     
     
-
+def main():
+    print(crud_api.get_all_products())
+main()
 
 
 

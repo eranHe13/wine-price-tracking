@@ -92,14 +92,6 @@ def scrape(name):
 
 
 
-
-# def main():
-#     scrape("דרך ארץ סובינון בלאן")
-#
-#
-# main()
-#
-    
     
 
 

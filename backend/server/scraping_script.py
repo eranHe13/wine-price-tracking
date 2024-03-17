@@ -27,6 +27,14 @@ def get_prices(wine_name) :
         "haturki" : dict_results.get("scraping.haturki" ,
                                      {"regular_price" : None , "club_price" : None , "sale_price" : None})
     }
+    wine_prices = {}
+    for store, details in prices.items():
+        wine_prices[store] = {
+            'regular_price': details['regular_price'],
+            'club_price': details['club_price'],
+            'sale_price': details['sale_price']
+    }
+        
     ############################ for printing ###################################
     # Extract image link from paneco source
     image_links = {
@@ -34,7 +42,13 @@ def get_prices(wine_name) :
         "paneco" : dict_results.get("scraping.paneco" , {}).get("image_url" , None) ,
         "haturki" : dict_results.get("scraping.haturki" , {}).get("image_url" , None)
     }
-
+    if image_links["derech_hyin"]:
+        img_url = image_links["derech_hyin"]
+    elif image_links["paneco"]:
+        img_url = image_links["paneco"]
+    else:
+        img_url = image_links["haturki"]
+    
     # Extract URLs from each source
     urls = {
         "derech_hyin" : dict_results.get("scraping.derech_hyin" , {}).get("url" , None) ,
@@ -45,26 +59,35 @@ def get_prices(wine_name) :
     # Create wine dictionary
     wine = {
         "name" : wine_name ,
-        "prices" : prices ,
-        "image_links" : image_links ,
-        "urls" : urls
+        "prices" : wine_prices ,
+        "urls" : urls,
+        "img" : img_url
     }
+    return wine
+    # for k in wine:
+    #     if k == "prices":
+    #         print("Prices")
+    #         for site in wine[k]:
+    #             print(f'{site} --> {wine[k][site]}')
+    #     else : print(f'{k} --> {wine[k]}')
 
+    
     # Print wine details
-    print("Wine Name:" , wine_name)
-    print("Prices:")
-    for source , price in prices.items() :
-        print(
-            f"- {source.capitalize()} Price: {price['regular_price']}, Club Price: {price['club_price']}, Sale Price: {price['sale_price']}")
-    print("Image Links:")
-    for source , link in image_links.items() :
-        print(f"- {source.capitalize()}: {link}")
-    print("URLs:")
-    for source , url in urls.items() :
-        print(f"- {source.capitalize()}: {url}")
-    ############################ end printing ###################################
+    # print("Wine Name:" , wine_name)
+    # print("Prices:")
+    # for source , price in prices.items() :
+    #     print(
+    #         f"- {source.capitalize()} Price: {price['regular_price']}, Club Price: {price['club_price']}, Sale Price: {price['sale_price']}")
+    # print("Image Links:")
+    # for source , link in image_links.items() :
+    #     print(f"- {source.capitalize()}: {link}")
+    # print("URLs:")
+    # for source , url in urls.items() :
+    #     print(f"- {source.capitalize()}: {url}")
+    # ############################ end printing ###################################
 
-    return dict_results
+    # return dict_results
+
 
 
 

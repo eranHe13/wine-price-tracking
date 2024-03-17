@@ -3,6 +3,7 @@ import bcrypt  # for password hashing
 import datetime
 from contextlib import closing
 import scraping_script
+import json
 
 DATABASE_PATH = "..\\data\\pricetracking.db"
 
@@ -113,12 +114,25 @@ def add_new_product_for_user(user_id, wine_name, desired_price):
                 # If the wine doesn't exist, scrape the prices
                 print("wine doesnt exist in the price_history table", wine_name)
                 date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                wine_prices, wine_image = scraping_script.get_prices(wine_name)
-                print(wine_prices,wine_image)
+                wine = scraping_script.get_prices(wine_name)
+                urls_json = json.dumps(wine["urls"])
+                sp_derech_json = json.dumps(wine["prices"]["derech_hyin"]["sale_price"])
+                sp_haturki_json = json.dumps(wine["prices"]["haturki"]["sale_price"])
+                sp_paneco_json = json.dumps(wine["prices"]["paneco"]["sale_price"])
+
                 # Insert scraped prices into the price_history table
+                query = '''INSERT INTO current_price (wine_name , date ,counter, product_image , details , rp_derech , cp_derech , sp_derech , rp_haturki , cp_haturki , sp_haturki , rp_paneco , cp_paneco , sp_paneco) 
+                        VALUES (?, ?, ?,? , ?, ?, ? , ?, ?, ? , ?, ?, ? ,?)'''
+                
                 cursor.execute(
-                    "INSERT INTO current_price (wine_name, date, product_image, price_wine_rout, price_paneco, price_haturki , counter) VALUES (?, ?, ?, ?,?, ? , ?)",
-                    (wine_name, date,wine_image, wine_prices[0], wine_prices[1], wine_prices[2] , 1))
+                    query,
+                    (wine["name"], date ,1,wine["img"], urls_json,
+                     wine["prices"]["derech_hyin"]["regular_price"] , wine["prices"]["derech_hyin"]["club_price"] ,sp_derech_json,
+                     wine["prices"]["haturki"]["regular_price"] , wine["prices"]["haturki"]["club_price"] ,sp_haturki_json,
+                     wine["prices"]["paneco"]["regular_price"] , wine["prices"]["paneco"]["club_price"] ,sp_paneco_json
+                     ))
+                
+                
                 conn.commit()
                 product_id = cursor.lastrowid  # Get the product ID
 
@@ -156,7 +170,7 @@ def get_all_products():
     cursor = conn.cursor()
     try:
         
-        cursor.execute("SELECT * FROM currnet_price ")
+        cursor.execute("SELECT id , wine_name FROM current_price ")
         temp = cursor.fetchall()
         return temp
     

@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 from selenium import webdriver
 import re
+from .similarity import compute_similarity
 
 def scrape(name):
     url = 'https://www.paneco.co.il/catalogsearch/result/?q='
@@ -22,6 +23,8 @@ def scrape(name):
         # Find the element by ID and extract the data-name attribute
         product_details_element = soup.find("div" , class_="product details product-item-details")
         WINE_NAME = product_details_element.contents[1].contents[1].contents[0][2:]
+        if(compute_similarity(WINE_NAME ,name ) < 0.75):
+            raise ValueError
         # Find the span element with the class "product-image-wrapper"
         image_wrapper = soup.find("span" , class_="product-image-wrapper")
         # Get the img tag inside the span element

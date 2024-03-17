@@ -5,7 +5,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
 import re
 import time
-
+from .similarity import compute_similarity
 
 def scrape(wine_name) :
     url = "https://www.haturki.com/?s="
@@ -28,7 +28,12 @@ def scrape(wine_name) :
         # Extract the wine name
         wine_name_element = soup.select_one("#pageCategory section:nth-of-type(3) div:nth-of-type(1) a h2")
         WINE_NAME = wine_name_element.get_text(strip=True) if wine_name_element else None
-
+        SIM = compute_similarity(WINE_NAME ,wine_name )
+        print("HATORKY WINE NAME ---- " ,WINE_NAME )
+        print("compute_similarity WINE NAME ---- " ,SIM )
+        # if(compute_similarity(WINE_NAME ,wine_name ) < 0.75):
+        #     print("compute_similarity WINE NAME ---- " ,WINE_NAME )
+        #     raise ValueError
         # Extract the image URL
         image_element = soup.select_one(
             "#pageCategory section:nth-of-type(3) div:nth-of-type(1) a div:nth-of-type(3) div img")

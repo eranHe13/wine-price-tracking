@@ -224,24 +224,3 @@ def get_all_products():
 
 
 
-# # Function to add a user
-# def add_user(name, password, email):
-#     print("---------add_user-----------\ninput --> ", name, password, email )
-#     hashed_password = hash_password(password)
-#     with sqlite3.connect(DATABASE_PATH) as conn:
-#         cursor = conn.cursor()
-#         sql = "INSERT INTO users (username, password, email) VALUES (?, ?, ?)"
-#         try:
-#             cursor.execute(sql, (name, hashed_password, email))
-#             conn.commit()
-#             last_id = cursor.lastrowid
-#             cursor.execute("SELECT * FROM users WHERE id = ?", (last_id,))
-#             user = cursor.fetchone()
-#             print("newUser -- > ", user )
-#             return user
-#         except sqlite3.Error as e:
-#             print(f"add_user error: ({name}, {email})", str(e))
-#             return "user email exists"
-
-
-# Add the rest of your functions here

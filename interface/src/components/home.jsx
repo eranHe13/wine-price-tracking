@@ -7,6 +7,7 @@ import { removeWine } from "../server";
 import { useNavigate } from 'react-router-dom';
 import logo from "./assests/logo.jpg";
 import logoutLogo from "./assests/logout.png";
+import Welcome from "./welcome";
 
 function Home(props) {
   const { user , updateUser  } = useUser();
@@ -126,7 +127,7 @@ function Home(props) {
         height: '60px', // Adjust based on your preference
         width: '60px',  // Making the width equal to the height for a circle
         borderRadius: '50%',  // Circular radius
-              objectFit: 'cover', // Cover to ensure the image fully fills the circle
+        objectFit: 'cover', // Cover to ensure the image fully fills the circle
         marginRight:"35px"
 }
     } onClick={handleLogOut}></img>
@@ -156,8 +157,8 @@ function Home(props) {
         ) : selectedProduct ? (
           <ProductDetails product={selectedProduct} />
         ) : (
-          <p>Select a product to view details or add a new product.</p>
-        )}    </div>
+          <Welcome />   
+)}    </div>
   </div>
   </div>
  

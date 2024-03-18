@@ -9,7 +9,7 @@ run react app : port - 3000
 
 
 TASKS:
-1. change the database : 
-    - add new table in the name wine_prices_history
-    - change the name of table wine_history to wine_current_price and add culomn counter 
-     
+- in controller continue function that scan all the wines and update Table:
+     - current_price
+     - history_price
+- for each user 

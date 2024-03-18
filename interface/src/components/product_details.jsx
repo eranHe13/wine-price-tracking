@@ -2,6 +2,8 @@ import React from 'react';
 
 const ProductDetails = ({ product }) => {
     const img = product.product_image ? product.product_image: null;
+    const url = JSON.parse(product.details)
+    
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100%' }}>
       
@@ -12,29 +14,38 @@ const ProductDetails = ({ product }) => {
       <div style={{ display: 'flex', justifyContent: 'space-around'   }}>
         {/* Product Details on the Left */}
        
-        <table class="table" style={{ padding: '0 20px', direction: 'rtl' , fontSize:"25px" }}>
+        <table class="table" style={{ padding: '0 5px', direction: 'rtl' , fontSize:"25px" }}>
           <thead>
             <tr>
-              <th scope="col">#</th>
-              <th scope="col">Store</th>
-              <th scope="col">Price</th>
+              <th scope="col"> <strong> קישור </strong> </th>
+              <th scope="col"><strong>חנות</strong></th>
+              <th scope="col"><strong>מחיר רגיל</strong></th>
+              <th scope="col"><strong>מחיר מועדון</strong></th>
+              <th scope="col"><strong>מחיר סייל</strong></th>
+              
             </tr>
           </thead>
           <tbody>
             <tr>
-              <th scope="row">1</th>
+            <th scope="row"><a href={url["derech_hyin"]}>#</a></th>
               <td>דרך היין</td>
-              <td>{product.derech_hayin}</td>
+              <td>{product.rp_derech}</td>
+              <td>{product.cp_derech}</td>
+              <td>{product.sp_derech}</td>
             </tr>
             <tr>
-              <th scope="row">2</th>
+            <th scope="row"><a href={url["paneco"]}>#</a></th>
               <td>פנקו</td>
-              <td>{product.paneco}</td>
+              <td>{product.rp_paneco}</td>
+              <td>{product.cp_paneco}</td>
+              <td>{product.sp_paneco}</td>
             </tr>
             <tr>
-              <th scope="row">3</th>
+            <th scope="row"><a href={url["haturki"]}>#</a></th>
               <td>הטורקי</td>
-              <td>{product.haturkey}</td>
+              <td>{product.rp_haturkey }</td>
+              <td>{product.cp_haturkey}</td>
+              <td>{product.sp_haturkey}</td>
             </tr>
             {/* Additional product details can be dynamically inserted here */}
           </tbody>

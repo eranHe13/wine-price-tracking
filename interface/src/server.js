@@ -82,17 +82,17 @@ const get_user_wines = async (userID , updateUser) => {
   const transformProductsArrayToMap = (responseData) => {
     const productsMap = new Map();
     responseData.data.forEach(responseData => {
-      const [id, name, date, derech_hayin, paneco, haturkey,product_image , details , counter, desire_price] = responseData;
+      const [id, name, date, counter, product_image, details,rp_derech ,cp_derech , sp_derech, rp_haturkey,cp_haturkey,sp_haturkey,rp_paneco ,cp_paneco,sp_paneco, desire_price] = responseData;
       productsMap.set(id, {
         id,
         name,
         date,
-        derech_hayin,
-        paneco,
-        haturkey,
+        counter,
         product_image, 
         details , 
-        counter,
+        rp_derech,cp_derech,sp_derech,
+        rp_haturkey , cp_haturkey , sp_haturkey,
+        rp_paneco ,sp_paneco,cp_paneco,
         desire_price,
       });
     });

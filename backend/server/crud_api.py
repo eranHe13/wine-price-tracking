@@ -171,7 +171,6 @@ def update_products(id , name , wine_data):
     cursor = conn.cursor()
     try:
         date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        # Insert scraped prices into the price_history table
         query = '''UPDATE current_price
                     SET date = ? , 
                         rp_derech = ?,cp_derech = ? ,sp_derech = ? ,
@@ -179,20 +178,19 @@ def update_products(id , name , wine_data):
                         rp_paneco = ?,cp_paneco = ? ,sp_paneco = ?  
                     WHERE id = ? ;'''
         
-        cursor.execute(
-            query,
-            (   date,
+        cursor.execute(query,
+            (date,
                 wine_data["derech_hyin"]["regular_price"] , wine_data["derech_hyin"]["club_price"] ,sp_derech_json,
                 wine_data["haturki"]["regular_price"] , wine_data["haturki"]["club_price"] ,sp_haturki_json,
                 wine_data["paneco"]["regular_price"] , wine_data["paneco"]["club_price"] ,sp_paneco_json, 
                 id
                 ))
         conn.commit()
+        
         query = '''INSERT INTO price_history (product_id , wine_name ,date , rp_derech , cp_derech , sp_derech , rp_haturki , cp_haturki , sp_haturki , rp_paneco , cp_paneco , sp_paneco) 
                         VALUES (?, ?, ?,? , ?, ?, ? , ?, ?, ? , ?, ?)'''
                 
-        cursor.execute(
-            query,
+        cursor.execute(query,
             (id, name,date ,
             wine_data["derech_hyin"]["regular_price"] , wine_data["derech_hyin"]["club_price"] ,sp_derech_json,
             wine_data["haturki"]["regular_price"] , wine_data["haturki"]["club_price"] ,sp_haturki_json,
@@ -209,7 +207,7 @@ def get_all_products():
     cursor = conn.cursor()
     try:
         
-        cursor.execute("SELECT id , wine_name FROM current_price ")
+        cursor.execute("SELECT id, wine_name FROM current_price")
         temp = cursor.fetchall()
         return temp
     
@@ -220,6 +218,23 @@ def get_all_products():
     finally:
         conn.close()
         
+
+def get_user_product_alerts():
+    conn = sqlite3.connect(DATABASE_PATH)
+    cursor = conn.cursor()
+    try:
+        
+        cursor.execute("SELECT * FROM user_product_alerts ")
+        temp = cursor.fetchall()
+        conn.close()
+        return temp
+    
+
+    except sqlite3.Error as e:
+        print(e)
+        return None
+    finally:
+        conn.close()
 ################################
 
 

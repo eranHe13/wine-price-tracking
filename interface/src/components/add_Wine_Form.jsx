@@ -1,44 +1,79 @@
-import React, { useState } from 'react';
-import {addWine , get_user_wines} from "../server"
+import React, { useState, useEffect } from 'react';
+import { addWine, get_user_wines } from "../server";
 
-// Define the AddProductForm component as a function
 const AddProductForm = ({ user, updateUser }) => {
-  const [name, setName] = useState('');
-  const [desired_price, setPrice] = useState('');
+  const [wineNames, setWineNames] = useState([]);
+  const [selectedName, setSelectedName] = useState('');
+  const [desiredPrice, setDesiredPrice] = useState('');
   const [error, setError] = useState('');
 
-  const submitHandler = async (event) => {
+  useEffect(() => {
+    // Fetch wine names from the CSV file
+    fetch('/wine_names.csv')
+      .then(response => response.text())
+      .then(text => {
+        // Split the CSV text into an array of wine names
+        const names = text.split('\n').map(name => name.trim());
+        setWineNames(names.filter(name => name)); // Filter out empty lines
+      })
+      .catch(error => {
+        console.error('Error fetching wine names:', error);
+      });
+  }, []);
+
+  const handleNameChange = (event) => {
+    setSelectedName(event.target.value);
+  };
+
+  const handlePriceChange = (event) => {
+    setDesiredPrice(event.target.value);
+  };
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     setError(''); // Clear any existing error messages
 
-    if (!name.trim()) {
-      setError('Please enter a wine name.');
+    if (!selectedName) {
+      setError('Please select or enter a wine name.');
       return;
-    } else if (!desired_price || isNaN(desired_price) || parseFloat(desired_price) <= 0) {
+    } else if (!desiredPrice || isNaN(desiredPrice) || parseFloat(desiredPrice) <= 0) {
       setError('Please enter a valid positive price.');
       return;
     }
 
     try {
-      await addWine({ "user_id": user.id, "wine_name": name, "price": desired_price }, updateUser);
+      await addWine({ "user_id": user.id, "wine_name": selectedName, "price": desiredPrice }, updateUser);
       get_user_wines(user.id, updateUser);
-      
     } catch (error) {
       setError('An error occurred while saving the product.');
-      
     }
   };
 
   return (
-    <form onSubmit={submitHandler}>
+    <form onSubmit={handleSubmit}>
       {error && <div style={{ color: 'red', paddingBottom: '10px' }}>{error}</div>}
       <div style={{ paddingBottom: "10px", width: "350px" }}>
         <label className="form-label" style={{ fontSize: "20px" }}>Wine Name</label>
-        <input className="form-control" type="text" value={name} onChange={(e) => setName(e.target.value)} />
+        <input
+          className="form-control"
+          list="wineNames"
+          value={selectedName}
+          onChange={handleNameChange}
+        />
+        <datalist id="wineNames">
+          {wineNames.map((name, index) => (
+            <option key={index} value={name} />
+          ))}
+        </datalist>
       </div>
       <div style={{ paddingBottom: "10px", width: "150px" }}>
         <label className="form-label" style={{ fontSize: "20px" }}>Desired Price</label>
-        <input className="form-control" type="text" value={desired_price} onChange={(e) => setPrice(e.target.value)} />
+        <input
+          className="form-control"
+          type="text"
+          value={desiredPrice}
+          onChange={handlePriceChange}
+        />
       </div>
       <button className="btn btn-primary" type="submit">Save Product</button>
     </form>

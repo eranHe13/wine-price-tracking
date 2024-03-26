@@ -11,15 +11,14 @@ def update_prices():
    for wine in wine_list:
       wine_data = scraping_script.get_prices(wine[1])
       products[wine[0]] = Product(wine[0] ,wine[1] ,  wine_data["prices"])
-   for p in products:
-      print(f"{products[p].id} , {products[p].name } ----> {products[p].min_price()}")
-   # for product in products:
-   #   crud_api.update_products(product , products[product].name ,products[product].prices)
+   # for p in products:
+   #    print(f"{products[p].id} , {products[p].name } ----> {products[p].min_price()}")
+   for product in products:
+     crud_api.update_products(product , products[product].name ,products[product].prices)
       
    return products
    
 def check_user_prices(products):
-   
    users_products = crud_api.get_user_product_alerts()
    users_products_set = {}
    for d in users_products:
@@ -45,7 +44,6 @@ def check_user_prices(products):
       
 
 def main(): 
-   
    products = update_prices()
    check_user_prices(products)
 main()

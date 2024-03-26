@@ -21,7 +21,7 @@ def scrape(name):
         SOUP = BeautifulSoup(WINE_ELEMENT_OH, 'html.parser')
         WINE_ID_STRING = SOUP.find('a', class_='thumbnail')['data-product-id']
         WINE_NAME = SOUP.find('h3', class_='name').text
-        if(compute_similarity(WINE_NAME ,name ) < 0.75):
+        if(compute_similarity(WINE_NAME ,name ) < 0.85):
             raise ValueError
 
         ## add - check similary of search name and product name if not return None

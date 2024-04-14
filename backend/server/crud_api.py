@@ -206,18 +206,31 @@ def get_all_products():
     conn = sqlite3.connect(DATABASE_PATH)
     cursor = conn.cursor()
     try:
-        
         cursor.execute("SELECT id, wine_name FROM current_price")
         temp = cursor.fetchall()
         return temp
     
-
     except sqlite3.Error as e:
         print(e)
         return None
     finally:
         conn.close()
-        
+
+
+def get_all_products_test():
+    conn = sqlite3.connect(DATABASE_PATH)
+    cursor = conn.cursor()
+    try:
+        cursor.execute("SELECT * FROM current_price")
+        temp = cursor.fetchall()
+        return temp
+    
+    except sqlite3.Error as e:
+        print(e)
+        return None
+    finally:
+        conn.close()
+
 
 def get_user_product_alerts():
     conn = sqlite3.connect(DATABASE_PATH)
@@ -237,5 +250,16 @@ def get_user_product_alerts():
         conn.close()
 ################################
 
-
-
+def get_user_email(id):
+    conn = sqlite3.connect(DATABASE_PATH)
+    cursor = conn.cursor()
+    try:
+        cursor.execute("SELECT users.email FROM users WHERE users.id=?", (id,))
+        temp = cursor.fetchall()
+        return temp
+    
+    except sqlite3.Error as e:
+        print(e)
+        return None
+    finally:
+        conn.close()

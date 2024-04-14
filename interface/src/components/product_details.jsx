@@ -9,7 +9,7 @@ const ProductDetails = ({ product }) => {
       if(price === 0 ){
         return ""
       }
-      return price
+      return "₪" + price  
     }
 
     const sale = (sale_store) =>{
@@ -29,11 +29,13 @@ const ProductDetails = ({ product }) => {
       
       {/* Product Name in the Center */}
       
-      <h2 class="display-1" style={{ textAlign: 'center' }}>{product.name}</h2>
-      <h3 style={{ textAlign: 'center' , padding:"20px" }}>המחיר שלי : {product.desire_price}</h3>
+      
       <div style={{ display: 'flex', justifyContent: 'space-around'   }}>
+      
         {/* Product Details on the Left */}
        <div style={{ padding: '30px 25px'}}>
+       <h2 class="display-1" style={{ textAlign: 'center' }}>{product.name}</h2>
+      <h3 style={{ textAlign: 'center' , padding:"20px" }}>המחיר שלי : ₪{product.desire_price}</h3>
         <table class="table" style={{ padding: '0 5px', direction: 'rtl' , fontSize:"25px" }}>
           <thead>
             <tr>

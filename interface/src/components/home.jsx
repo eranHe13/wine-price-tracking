@@ -137,7 +137,7 @@ function Home(props) {
     <div className="" style={{ display: 'flex', flexDirection: 'row', height: '100vh' }}>
     <div className="listproducts" style={{ flex: '1', overflowY: 'auto', borderLeft: '2px solid #ccc' ,order:"1"}}>
       <div class="d-flex justify-content-center"  >
-    <button class="btn btn-primary" onClick={handleAddProductClick } style={{marginTop:"20px" ,width:"80%" , fontSize:"20px" }}>add new wine</button>
+    <button class="btn btn-primary" onClick={handleAddProductClick } style={{marginTop:"20px" ,width:"80%" , fontSize:"20px" }}>הוסף יין</button>
     </div>
     <div class="d-flex justify-content-center"  >
       <ul style={{ listStyleType: 'none', paddingLeft: "15px" , paddingTop:"15px"  , fontSize:"27px" ,  direction:"rtl"}}>
@@ -150,7 +150,7 @@ function Home(props) {
       </ul>
       </div>
     </div>
-    <div className="productDetails" style={{ flex: '4', padding: '20px',order:"-1" }}>
+    <div className="productDetails" style={{ alignItems:"center" ,  flex: '4', padding: '20px',order:"-1" }}>
     {showAddProduct ? (
           <AddProductForm user={user} updateUser={updateUser} />
 

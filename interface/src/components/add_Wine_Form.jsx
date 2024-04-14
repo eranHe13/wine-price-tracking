@@ -50,10 +50,11 @@ const AddProductForm = ({ user, updateUser }) => {
   };
 
   return (
+<div style={{ display: 'flex',  alignItems: 'center'  , direction:"rtl"}}>
     <form onSubmit={handleSubmit}>
-      {error && <div style={{ color: 'red', paddingBottom: '10px' }}>{error}</div>}
-      <div style={{ paddingBottom: "10px", width: "350px" }}>
-        <label className="form-label" style={{ fontSize: "20px" }}>Wine Name</label>
+      {error && <div style={{ color: 'red', paddingBottom: '10px'  }}>{error}</div>}
+      <div style={{alignSelf:"flex-end", paddingBottom: "10px", width: "350px" }}>
+        <label className="form-label" style={{ fontSize: "20px" }}>שם היין</label>
         <input
           className="form-control"
           list="wineNames"
@@ -66,8 +67,8 @@ const AddProductForm = ({ user, updateUser }) => {
           ))}
         </datalist>
       </div>
-      <div style={{ paddingBottom: "10px", width: "150px" }}>
-        <label className="form-label" style={{ fontSize: "20px" }}>Desired Price</label>
+      <div style={{alignSelf:"center" ,  paddingBottom: "10px", width: "150px"  , textAlign: 'right'}}>
+        <label className="form-label" style={{ fontSize: "20px" }}>מחיר מבוקש</label>
         <input
           className="form-control"
           type="text"
@@ -77,6 +78,7 @@ const AddProductForm = ({ user, updateUser }) => {
       </div>
       <button className="btn btn-primary" type="submit">Save Product</button>
     </form>
+    </div>
   );
 };
 

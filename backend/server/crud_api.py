@@ -254,7 +254,7 @@ def get_user_email(id):
     conn = sqlite3.connect(DATABASE_PATH)
     cursor = conn.cursor()
     try:
-        cursor.execute("SELECT users.email FROM users WHERE users.id=?", (id,))
+        cursor.execute("SELECT users.email,user.username FROM users WHERE users.id=?", (id,))
         temp = cursor.fetchall()
         return temp
     
@@ -263,3 +263,4 @@ def get_user_email(id):
         return None
     finally:
         conn.close()
+

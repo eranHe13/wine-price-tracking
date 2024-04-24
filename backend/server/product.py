@@ -1,5 +1,4 @@
 
-
 class Product:
     def __init__(self, product_id, name, input_prices):
         self.id = product_id
@@ -10,7 +9,7 @@ class Product:
     def __str__(self):
         prices_str = ""
         for store in self.prices:
-            prices_str += f"{store}\nregular_price --> {self.prices[store]["regular_price"]} \nclub_price --> {self.prices[store]["club_price"]}\nsale_price --> {self.prices[store]["sale_price"]}\n\n" 
+            prices_str += f"{store}\nregular_price --> {self.prices[store]['regular_price']} \nclub_price --> {self.prices[store]['club_price']}\nsale_price --> {self.prices[store]['sale_price']}\n\n"
             minP = self.min_price()
         return (f"\nProduct ID: {self.id}, Name: {self.name}\nPrice:\n${prices_str}\nmin_price: {minP}\n")
     

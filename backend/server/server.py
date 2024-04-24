@@ -1,9 +1,16 @@
+import multiprocessing
 import sys
 from pathlib import Path
 from fastapi import FastAPI, Body, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+import controller
 import uvicorn
 import crud_api
+import schedule
+import time
+from apscheduler.schedulers.background import BackgroundScheduler
+
+
 
 app = FastAPI()
 
@@ -64,8 +71,20 @@ async def register(userData: dict = Body(...)):
     if res : return res
     else : return None
 
-    
+
+def update_prices_job():
+    products = controller.update_prices()
+    controller.check_user_prices(products)
+
+def stam():
+    print("entered stam")
+
 if __name__ == "__main__":
+    # Create a scheduler
+    scheduler = BackgroundScheduler()
+    scheduler.add_job(update_prices_job, 'interval', hours=24)
+    scheduler.start()
+    update_prices_job()
     uvicorn.run("server:app", host="0.0.0.0", port=8000, reload=True)
 
-#python -m uvicorn server:app --reload
+

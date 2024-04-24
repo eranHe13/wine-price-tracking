@@ -1,12 +1,12 @@
 import crud_api 
 import scraping_script 
-import ast 
 DATABASE_PATH = "..\\data\\pricetracking.db"
 from product import Product
 import mail_sender
 
 
 def update_prices():
+   print("enterd update")
    wine_list = crud_api.get_all_products()
    products = {}
    for wine in wine_list:
@@ -33,16 +33,24 @@ def check_user_prices(products):
       for product_alert in users_products_set[user_id]:
          product_id   = product_alert[0]
          user_price = product_alert[1]
-         store , min_price  = products[product_id].min_price()
+         store , min_price = products[product_id].min_price()
          #print(f"product_id {product_id} ,  user_price  {user_price} ,   min_price  {min_price} , store  {store}")
 
          if (min_price <= user_price) :
-            mail_data = f"USER - {user_id} the wine  {products[product_id].name} with the price -- {min_price} is selling in {store} the price is lower then users\n "
-            user_email = crud_api.get_user_email(user_id)
+            user = crud_api.get_user_email(user_id)[0]
+            user_email = user[0]
+            user_name = user[1]
+            mail_data = (
+               f"Hello - {user_name}! \nthe wine: {products[product_id].name}  is now selling for: {min_price} "
+               f"at the store {store}. \n"
+               f"this is below your target price! hurry up and buy :)\n ")
             #print(f"USER - {user_id} the wine  {products[product_id].name} with the price -- {min_price} is selling in {store} the price is lower then users\n ")
-            mail_sender.email_controller(user_email , mail_data)
+            mail_sender.email_controller(user_email, mail_data)
          else:
             print(f"NONE----")
+
+
+
 
 def test_email_controller():
    users_products = crud_api.get_user_product_alerts()
@@ -67,19 +75,18 @@ def test_email_controller():
          store , min_price  = products[product_id].min_price()
 
          if (min_price <= user_price) :
-            mail_data = f"USER - {user_id} the wine  {products[product_id].name} with the price -- {min_price} is selling in {store} the price is lower then your price\n "
-            user_email = crud_api.get_user_email(user_id)[0][0]
+            user = crud_api.get_user_email(user_id)[0]
+            user_email = user[0]
+            user_name = user[1]
+
+            mail_data = (f"Hello - {user_name}! \nthe wine: {products[product_id].name}  is now selling for: {min_price} "
+                         f"at the store {store}. \n"
+                         f"this is below your target price! hurry up and buy :)\n ")
+
             print(user_email)
             print(mail_data)
-            mail_sender.email_controller(user_email , mail_data)
+            mail_sender.email_controller(user_email,  mail_data)
 
-
-def main(): 
-   test_email_controller()
-   #print(crud_api.get_user_email("14"))
-   #products = update_prices()
-   #check_user_prices(products)
-main()
 
 
 
